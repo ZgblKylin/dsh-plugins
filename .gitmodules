@@ -10,3 +10,6 @@
 [submodule "src/dsh-review"]
 	path = src/dsh-review
 	url = ../dsh-review
+[submodule "third_party/dsh-anchored-standard"]
+	path = third_party/dsh-anchored-standard
+	url = https://github.com/xiaobright/dsh-anchored-standard
