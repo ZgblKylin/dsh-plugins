@@ -1,0 +1,9 @@
+# Third-Party Plugins
+
+记录当前使用的第三方插件（无法通过插件市场安装）
+
+- [dshmarket](https://github.com/dsh-market/dsh-market)
+- [DSH-better-sidebar@latest](https://github.com/omdsh-dev/DSH-better-sidebar)
+  - [dsh-sidebar-qa](https://github.com/chenruot/dsh-sidebar-qa)
+- [modlens@3.21.1](https://github.com/liustack/modlens)
+- [dsh-deep-whale/maid-atelier](https://github.com/Small-tailqwq/dsh-deep-whale) 源码安装

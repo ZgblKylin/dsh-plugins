@@ -4,3 +4,6 @@
 [submodule "src/dsh-cache-hit-precision"]
 	path = src/dsh-cache-hit-precision
 	url = https://github.com/ZgblKylin/dsh-cache-hit-precision
+[submodule "third_party/dsh-deep-whale"]
+	path = third_party/dsh-deep-whale
+	url = https://github.com/Small-tailqwq/dsh-deep-whale
