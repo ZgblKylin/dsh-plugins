@@ -1,0 +1,1 @@
+../../references/deepseek-harness-desktop/deepseek-harness/packages/boot/app-boot/src/profile.ts

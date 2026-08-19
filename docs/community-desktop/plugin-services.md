@@ -1,0 +1,1 @@
+../../references/deepseek-harness-desktop/dsh-plugin-desktop/docs/plugin-services.md

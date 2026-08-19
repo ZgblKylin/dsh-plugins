@@ -1,0 +1,1 @@
+../../references/deepseek-harness-desktop/docs/plugin-ecosystem.md

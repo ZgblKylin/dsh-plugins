@@ -147,18 +147,26 @@ Market 是 DSH Desktop 内置的开放插件市场，只消费 npm package（经
 - [ ] `files` 白名单正确，发布 tarball 只含必要构建产物；`private` 标记与发布意图一致。
 - [ ] README 未暗示"被收录/审核/推荐"。
 
-## 参考文档（在 references/deepseek-harness-desktop/ 下）
+## 参考文档（docs/ 符号链接，指向 references/deepseek-harness-desktop/）
 
-- `docs/plugin-development.md` — 插件开发总览（现有接口 vs Draft 的区分）
-- `dsh-plugin-desktop/docs/plugin-services.md` — `desktopProfiles` / `desktopPnpm` 契约
-- `docs/plugin-ecosystem.md` — 生态倡议（组合优先 / 声明清晰 / 兼容优先）
-- `deepseek-harness/docs/cordis-primer.md` — Cordis 五种核心思想、事件模式、waterfall 语义
-- `deepseek-harness/docs/user/develop/basic/publish.md` — bundle 打包/发布教程（`dsh.bundle.patch` 官方依据）
-- `deepseek-harness/apps/cli/reference/README.md` — profile 组合、`dsh plugin add` 与 bundles reconcile 行为
-- `deepseek-harness/packages/boot/app-boot/src/profile.ts` — `DshBundleManifest` 与 profile/bundle 加载契约
-- `deepseek-harness/packages/bundle/` — 官方内置 bundle（base / web-app / headless）的 patch 层实例
-- `dsh-community-fabric/` — 仅作前瞻参考，不作为实现依据
-- `dsh-community-market/docs/catalog-provider-contract.md` — 目录提供方契约（已实现的公开 v1）
-- `dsh-community-market/docs/install-and-uninstall.md` — 安装/卸载边界与受管安装器规则
-- `dsh-community-market/docs/market-shell.md` — 市场壳设计与产品边界
-- `dsh-community-market/docs/catalog-adapter-guide.md` — 目录适配器接入指南
+所有参考文档通过符号链接汇总到 `docs/` 下，按来源分四个子目录：
+
+- **`docs/official/`** — 官方 DSH 文档与源码参考（`deepseek-harness/` 内的官方内容）：
+  - `cordis-primer.md` — Cordis 五种核心思想、事件模式、waterfall 语义
+  - `basic/` — 开发者基础教程目录（含 `publish.md` bundle 打包/发布教程、`config.md`、`index.md`、`tool.md` 等）
+  - `cli-reference.md` — profile 组合、`dsh plugin add` 与 bundles reconcile 行为
+  - `app-boot-profile.ts` — `DshBundleManifest` 与 profile/bundle 加载契约
+  - `bundle/` — 官方内置 bundle（base / web-app / headless）的 patch 层实例
+  - `examples/` — 官方示例（`deepseek-harness/examples`）
+- **`docs/community-desktop/`** — Desktop 插件开发文档（`docs/` 与 `dsh-plugin-desktop/docs/`，非官方核心仓库）：
+  - `plugin-development.md` — 插件开发总览（现有接口 vs Draft 的区分）
+  - `plugin-ecosystem.md` — 生态倡议（组合优先 / 声明清晰 / 兼容优先）
+  - `plugin-services.md` — `desktopProfiles` / `desktopPnpm` 契约
+- **`docs/community-fabric/`** — `dsh-community-fabric` 社区约定文档（architecture / research / rfcs），仅作前瞻参考，不作为实现依据
+- **`docs/community-market/`** — `dsh-community-market` 插件市场文档（含 examples / schemas）：
+  - `catalog-provider-contract.md` — 目录提供方契约（已实现的公开 v1）
+  - `install-and-uninstall.md` — 安装/卸载边界与受管安装器规则
+  - `market-shell.md` — 市场壳设计与产品边界
+  - `catalog-adapter-guide.md` — 目录适配器接入指南
+
+> 说明：`docs/` 下均为指向 `references/deepseek-harness-desktop/` 的相对符号链接，目标在 pinned 上游 submodule 内，只读；链接本身是外层仓库的普通文件（git mode 120000）。不要编辑链接目标。
