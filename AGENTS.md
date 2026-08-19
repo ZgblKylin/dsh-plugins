@@ -13,9 +13,10 @@ README.md     仓库说明
 - `references/deepseek-harness-desktop/` 是 pinned 上游子模块，只用于查证规范；不要编辑其中的任何文件，不要从该目录向插件源码复制代码。
 - 新增插件在 `src/<plugin-name>/` 下创建：`package.json`、`src/index.ts`（或 `index.js`）、`README.md`，必要时附 `tests/`。
 
-## 规范状态：Fabric 是 Draft，不是可依赖目标
+## 规范状态：Fabric 是 Draft，Market 已实现
 
 - `dsh-community-fabric` 的 manifest、capability、Host Descriptor 与统一事件模型目前**仅有 Draft 文档**，没有 runtime、SDK、正式 schema 或可加载插件。插件代码不得 import 它，不得声称"符合 Fabric 规范"作为兼容性承诺。
+- **`dsh-community-market` 与 Fabric 不同：它已完成并内置于 DSH Desktop**，其 `docs/` 是已实现的公开契约（`catalog-provider-contract` 为已实现的公开 v1 契约），对插件作者有实际约束；但它不发明新插件格式——市场只消费 npm package，`desktopProfiles` / `desktopPnpm` 仍是受管安装的底层服务。
 - 当前真正可用、可依赖的是官方现有接口：Cordis 插件模型（`@deepseek-ai/cordis`）与 Desktop 公开的 `desktopProfiles` / `desktopPnpm` Host service。
 - 文档中的表述（"必须/应该/可以"）在 RFC 被接受前不构成稳定承诺；写 README 或注释时不要把它们当成已发布的 API。
 - **Fabric 只作为插件开发的约束参考，不得进入插件交付内容**：插件代码、README、注释、`package.json` 与发布说明一律只提官方 DSH/Cordis 接口；不 import Fabric、不引用其 manifest/capability/事件模型、不声明"符合 Fabric 规范"。约束（如组合优先、声明清晰、兼容优先）以本文件下面的规范为准。
@@ -70,6 +71,17 @@ README.md     仓库说明
 - Capability/权限声明用于兼容判断、用户确认与审计，**不是安全沙箱**。受信任的同进程 JS 插件可以绕过 `ctx` 直接调操作系统接口。
 - 不要在文档中把"声明通过"描述成安全审核或权限强制。
 
+### 插件市场（Community Market）约束
+
+Market 是 DSH Desktop 内置的开放插件市场，只消费 npm package（经 `desktopProfiles` / `desktopPnpm` 受管安装），**不发明新插件格式**；本仓库插件如要在市场中被收录/安装，需满足其已实现的公开契约：
+
+- **包必须可被受管安装器接纳**：发布到 npm 的 package 应使用精确稳定的 SemVer 版本；不得依赖 GitHub URL、版本范围、`latest` tag 或 prerelease 作为安装目标。
+- **不得定义安装 lifecycle script**：manifest 中不得出现 `preinstall`、`install`、`postinstall` 或 `prepare`（受管安装器会拒绝这类 package）。
+- **运行时兼容**：声明的 DSH/Cordis 依赖需与 Desktop 内置 DSH runtime（当前基于 `0.1.0-rc.7`）兼容；`engines.node` 需接受 Desktop 内置的 Node.js runtime。
+- **需要 DSH bundle 证据**：若要作为 bundle 被加载，`dsh.bundle.patch` 必须指向 package 内真实存在的文件，且不得越出 package 目录。
+- **安全合规**：package 需由官方 npm 提供 HTTPS tarball 与合法 SHA-512 integrity。
+- **收录 ≠ 安全审核**：目录条目被展示或出现在"可安装"页，不代表任何一方审核、推荐或背书；插件 README 与文档不得暗示这一点。
+
 ## 质量要求
 
 - 每个插件至少验证：
@@ -80,6 +92,37 @@ README.md     仓库说明
 - 为每个插件写简短 README：说明用途、依赖的 service/slot、配置项、已知限制。
 - 插件行为有显著变化时更新 README，保持文档与代码同步。
 
+## Git 提交规范
+
+- 采用 Conventional Commits：`feat:` / `fix:` / `chore:` / `docs:` / `build:` / `refactor:`，正文按需使用。
+- 外层仓库与 `src/<plugin>/` 子模块各自独立提交；改动跨越两者时分别编写 commit message。
+- **不主动执行 `git commit`**：dsh 沙箱限制下由 dsh 生成的提交无法引用用户 GPG 签名，直接提交会绕过用户的签名配置。
+- 完成代码改动后，将变更添加到暂存区（`git add`），编写 commit message，并在回复中提醒用户手动执行 `git commit`（以便 GPG 签名与提交钩子生效）。
+- 提交前检查 `git status` 确认暂存范围正确；不要提交 `node_modules/`、`lib/` 等构建产物（已由 `.gitignore` 排除）。
+
+### 预提交 checklist（每次提交前逐项核对）
+
+**官方指南（DSH/Cordis）**
+- [ ] 插件遵循 Cordis 插件模型：`inject` 显式声明依赖，注册均为 effect（`ctx.effect`/`ctx.on`/disposer）。
+- [ ] 未依赖任何 Desktop 内部接口（`desktopRuntime`、`desktopPnpmBootstrap`、Electron、生成的 shim 等）。
+- [ ] 跨环境插件：普通 DSH fallback 为权威实现，Desktop 探测走 `ctx.get`/嵌套 `ctx.inject`，不靠 `process.argv`/`ctx.baseUrl`/settings/`$DSH_HOME` 推断 profile。
+- [ ] `package.json` 的 `dsh` 段、`exports`、构建产物路径与官方 client/bundle 契约一致。
+- [ ] README 反映当前行为；显著行为变化已同步更新。
+
+**社区约定（生态倡议 / Fabric 约束参考）**
+- [ ] 组合优先：未覆盖或假设其他插件内部实现；通过官方 slot/service/patch 组合。
+- [ ] 声明清晰：依赖的 service/slot 已显式声明，无运行时巧合依赖。
+- [ ] 兼容优先：未破坏已有组合；升级保持向后兼容。
+- [ ] Fabric 仅作约束参考：插件代码/README/package.json 未引用或 import Fabric 的 Draft 接口。
+
+**插件市场（Community Market）约束**
+- [ ] 版本为精确稳定 SemVer；无 GitHub URL、版本范围、`latest` tag 或 prerelease 安装目标。
+- [ ] 未定义 `preinstall`/`install`/`postinstall`/`prepare` lifecycle script。
+- [ ] `engines.node` 与 Desktop 内置 Node 兼容（当前 LTS ≥ 24）。
+- [ ] `dsh.bundle.patch`（若声明）指向 package 内真实文件且不越界。
+- [ ] `files` 白名单正确，发布 tarball 只含必要构建产物；`private` 标记与发布意图一致。
+- [ ] README 未暗示"被收录/审核/推荐"。
+
 ## 参考文档（在 references/deepseek-harness-desktop/ 下）
 
 - `docs/plugin-development.md` — 插件开发总览（现有接口 vs Draft 的区分）
@@ -87,3 +130,7 @@ README.md     仓库说明
 - `docs/plugin-ecosystem.md` — 生态倡议（组合优先 / 声明清晰 / 兼容优先）
 - `deepseek-harness/docs/cordis-primer.md` — Cordis 五种核心思想、事件模式、waterfall 语义
 - `dsh-community-fabric/` — 仅作前瞻参考，不作为实现依据
+- `dsh-community-market/docs/catalog-provider-contract.md` — 目录提供方契约（已实现的公开 v1）
+- `dsh-community-market/docs/install-and-uninstall.md` — 安装/卸载边界与受管安装器规则
+- `dsh-community-market/docs/market-shell.md` — 市场壳设计与产品边界
+- `dsh-community-market/docs/catalog-adapter-guide.md` — 目录适配器接入指南
