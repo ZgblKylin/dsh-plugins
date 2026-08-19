@@ -82,6 +82,15 @@ Market 是 DSH Desktop 内置的开放插件市场，只消费 npm package（经
 - **安全合规**：package 需由官方 npm 提供 HTTPS tarball 与合法 SHA-512 integrity。
 - **收录 ≠ 安全审核**：目录条目被展示或出现在"可安装"页，不代表任何一方审核、推荐或背书；插件 README 与文档不得暗示这一点。
 
+### bundle 加载（`dsh.bundle.patch`）注意事项
+
+- `dsh.bundle.patch` 是**官方契约**（非社区私有约定）：npm 包的 manifest 声明 `"dsh": { "bundle": { "patch": "./cordis.patch.yml" } }`，即成为一个可安装的 profile bundle 层。
+- 官方依据：`packages/boot/app-boot/src/profile.ts` 的 `DshBundleManifest`；`docs/user/develop/basic/publish.md`（bundle 教程）；`apps/cli/reference/README.md`（`dsh plugin add` 后按该声明 reconcile `dsh.profile.bundles`）；`docs/architecture.md`（"`dsh.bundle` points at a bundle's patch file"）；官方内置 `packages/bundle/{base,web-app,headless}/` 均为此格式。
+- 流程：`dsh plugin --profile <name> add <pkg>` 安装后，若 manifest 声明了 `dsh.bundle`，CLI 自动把该包追加进 `dsh.profile.bundles`；profile 启动时按列表顺序应用各 bundle 的 patch 层。
+- 因此**同时带 client 半的插件**（`dsh.client`）也走 bundle 通道即可：patch 里 `insert` 自己的 Loader row（`name` 为包名），Node 半侧扫描该 entry 的 `dsh.client` 并服务浏览器 bundle，无需手工改 profile 的 `cordis.patch.yml`。
+- patch 文件必须随发布包含（`files` 白名单加 `cordis.patch.yml`），且路径不得越出 package 目录（Market 安装器会校验）。
+- 未声明 `dsh.bundle` 的包仍可安装，但只作为普通依赖、不激活任何层（CLI 打印一次性警告）。
+
 ## 质量要求
 
 - 每个插件至少验证：
@@ -136,6 +145,10 @@ Market 是 DSH Desktop 内置的开放插件市场，只消费 npm package（经
 - `dsh-plugin-desktop/docs/plugin-services.md` — `desktopProfiles` / `desktopPnpm` 契约
 - `docs/plugin-ecosystem.md` — 生态倡议（组合优先 / 声明清晰 / 兼容优先）
 - `deepseek-harness/docs/cordis-primer.md` — Cordis 五种核心思想、事件模式、waterfall 语义
+- `deepseek-harness/docs/user/develop/basic/publish.md` — bundle 打包/发布教程（`dsh.bundle.patch` 官方依据）
+- `deepseek-harness/apps/cli/reference/README.md` — profile 组合、`dsh plugin add` 与 bundles reconcile 行为
+- `deepseek-harness/packages/boot/app-boot/src/profile.ts` — `DshBundleManifest` 与 profile/bundle 加载契约
+- `deepseek-harness/packages/bundle/` — 官方内置 bundle（base / web-app / headless）的 patch 层实例
 - `dsh-community-fabric/` — 仅作前瞻参考，不作为实现依据
 - `dsh-community-market/docs/catalog-provider-contract.md` — 目录提供方契约（已实现的公开 v1）
 - `dsh-community-market/docs/install-and-uninstall.md` — 安装/卸载边界与受管安装器规则
