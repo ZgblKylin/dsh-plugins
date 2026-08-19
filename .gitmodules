@@ -1,0 +1,3 @@
+[submodule "references/deepseek-harness-desktop"]
+	path = references/deepseek-harness-desktop
+	url = https://github.com/anywhere-labs/deepseek-harness-desktop.git
