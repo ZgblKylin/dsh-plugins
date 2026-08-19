@@ -7,11 +7,19 @@
 ```
 src/          插件源码，一个插件一个子目录
 references/   deepseek-harness-desktop 官方仓库子模块，只读参考，永不修改
+third_party/  第三方插件源码（git 克隆后本地编译安装用），含各自的 .git
+.dsh/skills/  项目级 DSH skill（每个 skill 一个子目录，内含 SKILL.md）
 README.md     仓库说明
 ```
 
 - `references/deepseek-harness-desktop/` 是 pinned 上游子模块，只用于查证规范；不要编辑其中的任何文件，不要从该目录向插件源码复制代码。
 - 新增插件在 `src/<plugin-name>/` 下创建：`package.json`、`src/index.ts`（或 `index.js`）、`README.md`，必要时附 `tests/`。
+- 第三方源码插件放在 `third_party/<plugin>/`（保留 `.git` 便于更新）；编译产物 tgz 放在 `third_party/` 下，已被 `.gitignore` 的 `*.tgz` 排除。
+
+## 项目 Skills
+
+- **`dsh-plugin-install`**：安装/卸载 DSH 插件到 profile 的标准流程。涉及插件安装、卸载、更新、源码编译安装时，先加载该 skill。其内容基于 `dsh plugin --profile <profile> add --help`（受管安装器转发的 pnpm add）的权威安装方式列表：npm 包 / tag / 版本 / 版本范围 / git 简写 / git URL / 本地 tgz / tarball URL / 目录。
+- Skill 存放于 `.dsh/skills/<skill-name>/SKILL.md`（frontmatter 含 `name`、`description`、`whenToUse`），由 DSH 的 `skill-filesystem` provider 自动发现。
 
 ## 规范状态：Fabric 是 Draft，Market 已实现
 
