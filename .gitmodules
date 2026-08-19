@@ -1,3 +1,6 @@
 [submodule "references/deepseek-harness-desktop"]
 	path = references/deepseek-harness-desktop
 	url = https://github.com/anywhere-labs/deepseek-harness-desktop.git
+[submodule "src/dsh-cache-hit-precision"]
+	path = src/dsh-cache-hit-precision
+	url = https://github.com/ZgblKylin/dsh-cache-hit-precision

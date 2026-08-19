@@ -92,6 +92,13 @@ Market 是 DSH Desktop 内置的开放插件市场，只消费 npm package（经
 - 为每个插件写简短 README：说明用途、依赖的 service/slot、配置项、已知限制。
 - 插件行为有显著变化时更新 README，保持文档与代码同步。
 
+## 沙箱与提权
+
+- 构建、安装、运行、调试等操作可能被 dsh 沙箱拦截（如 `pnpm` 经 Desktop 的 Electron 包装器执行时，named-pipe IPC 在受限模式下被禁止）。
+- 被拦截时**不要尝试用非标手段绕过**（改路径、直接调底层二进制、禁用安全检查、手工模拟产物等）。
+- 正确做法：**通过工具（pwsh 等）以 `sandbox_permissions` 向用户申请提权**，使用最窄的足够宽模式（通常 `danger-full-access`），并附一句理由；由用户在审批弹窗中决定是否放行。
+- 提权只针对被拦截的那条命令；审批被拒或环境限制（如沙箱端口/连接数限制）依然存在时，如实报告并换用合规手段（如降低并发重试），不反复尝试绕过。
+
 ## Git 提交规范
 
 - 采用 Conventional Commits：`feat:` / `fix:` / `chore:` / `docs:` / `build:` / `refactor:`，正文按需使用。
