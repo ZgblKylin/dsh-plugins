@@ -16,3 +16,6 @@
 [submodule "third_party/dsh-routing-suite"]
 	path = third_party/dsh-routing-suite
 	url = https://github.com/yjh051108/dsh-routing-suite
+[submodule "third_party/dsh-web-ui"]
+	path = third_party/dsh-web-ui
+	url = https://github.com/zhu1090093659/dsh-web-ui.git

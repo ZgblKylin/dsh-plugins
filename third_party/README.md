@@ -8,3 +8,5 @@
 - [modlens@3.21.1](https://github.com/liustack/modlens)
 - [dsh-deep-whale/maid-atelier](https://github.com/Small-tailqwq/dsh-deep-whale) 源码安装
 - [dsh-routing-suite](https://github.com/yjh051108/dsh-routing-suite) 源码安装
+- [dsh-web-ui](https://github.com/zhu1090093659/dsh-web-ui) 安装部分内容
+  - [@linxin666/dsh-liangshen@latest](dsh-web-ui/packages/dsh-liangshen/README.zh.md)
