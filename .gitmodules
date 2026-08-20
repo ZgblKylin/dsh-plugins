@@ -19,3 +19,15 @@
 [submodule "third_party/dsh-web-ui"]
 	path = third_party/dsh-web-ui
 	url = https://github.com/zhu1090093659/dsh-web-ui.git
+[submodule "third_party/modlens"]
+	path = third_party/modlens
+	url = https://github.com/liustack/modlens
+[submodule "third_party/dsh-market"]
+	path = third_party/dsh-market
+	url = https://github.com/dsh-market/dsh-market
+[submodule "third_party/DSH-better-sidebar"]
+	path = third_party/DSH-better-sidebar
+	url = https://github.com/omdsh-dev/DSH-better-sidebar
+[submodule "third_party/dsh-sidebar/qa"]
+	path = third_party/dsh-sidebar/qa
+	url = https://github.com/chenruot/dsh-sidebar-qa
