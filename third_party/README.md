@@ -7,3 +7,4 @@
   - [dsh-sidebar-qa](https://github.com/chenruot/dsh-sidebar-qa)
 - [modlens@3.21.1](https://github.com/liustack/modlens)
 - [dsh-deep-whale/maid-atelier](https://github.com/Small-tailqwq/dsh-deep-whale) 源码安装
+- [dsh-routing-suite](https://github.com/yjh051108/dsh-routing-suite) 源码安装

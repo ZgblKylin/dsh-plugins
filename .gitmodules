@@ -13,3 +13,6 @@
 [submodule "third_party/dsh-anchored-standard"]
 	path = third_party/dsh-anchored-standard
 	url = https://github.com/xiaobright/dsh-anchored-standard
+[submodule "third_party/dsh-routing-suite"]
+	path = third_party/dsh-routing-suite
+	url = https://github.com/yjh051108/dsh-routing-suite
