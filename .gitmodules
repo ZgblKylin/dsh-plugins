@@ -6,7 +6,7 @@
 	url = ../dsh-cache-hit-precision
 [submodule "third_party/dsh-deep-whale"]
 	path = third_party/dsh-deep-whale
-	url = https://github.com/Small-tailqwq/dsh-deep-whale
+	url = https://github.com/ZgblKylin/dsh-deep-whale
 [submodule "src/dsh-review"]
 	path = src/dsh-review
 	url = ../dsh-review
